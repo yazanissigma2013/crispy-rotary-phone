@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>UnblockedHub</title>
+
+<style>
+/* =========================
+   "BACKEND CSS SERVER"
+   ========================= */
+:root {
+  --bg: #000;
+  --text: #fff;
+  --accent: #444;
+  --button: #111;
+  --border: #666;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+nav button {
+  background: var(--button);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+nav button:hover {
+  background: var(--accent);
+}
+
+section {
+  display: none;
+  padding: 20px;
+}
+
+section.active {
+  display: block;
+}
+
+input {
+  background: #111;
+  color: white;
+  border: 1px solid var(--border);
+  padding: 8px;
+  width: 70%;
+}
+
+iframe {
+  width: 100%;
+  height: 500px;
+  border: 1px solid var(--border);
+  background: white;
+}
+
+.game-box {
+  border: 1px solid var(--border);
+  padding: 15px;
+  margin-top: 15px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  gap: 5px;
+}
+
+.cell {
+  width: 80px;
+  height: 80px;
+  background: #111;
+  color: white;
+  font-size: 32px;
+  text-align: center;
+  line-height: 80px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>UNBLOCKEDHUB</h1>
+  <p>Black & White | Games | Search Proxy</p>
+  <nav>
+    <button onclick="show('home')">Home</button>
+    <button onclick="show('proxy')">Search Proxy</button>
+    <button onclick="show('games')">Minigames</button>
+  </nav>
+</header>
+
+<section id="home" class="active">
+  <h2>Welcome to UnblockedHub</h2>
+  <p>Search freely and play games — all in one site.</p>
+</section>
+
+<section id="proxy">
+  <h2>DuckDuckGo Search Proxy</h2>
+  <input id="searchBox" placeholder="Search anything..." />
+  <button onclick="search()">Search</button>
+
+  <iframe id="proxyFrame" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
+</section>
+
+<section id="games">
+  <h2>Minigames</h2>
+
+  <!-- CLICKER GAME -->
+  <div class="game-box">
+    <h3>Clicker Game</h3>
+    <p>Score: <span id="score">0</span></p>
+    <button onclick="clickGame()">CLICK ME</button>
+  </div>
+
+  <!-- TIC TAC TOE -->
+  <div class="game-box">
+    <h3>Tic Tac Toe</h3>
+    <div class="grid" id="board"></div>
+    <button onclick="resetTTT()">Reset</button>
+  </div>
+</section>
+
+<footer>
+  UnblockedHub © 2025
+</footer>
+
+<script>
+/* =========================
+   BACKEND LOGIC (SIMULATED)
+   ========================= */
+const BackendServer = {
+  theme: "black-white",
+  version: "1.0",
+  author: "UnblockedHub"
+};
+
+/* NAVIGATION */
+function show(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+/* SEARCH PROXY */
+function search() {
+  const q = document.getElementById("searchBox").value;
+  document.getElementById("proxyFrame").src =
+    "https://duckduckgo.com/html/?q=" + encodeURIComponent(q);
+}
+
+/* CLICKER GAME */
+let score = 0;
+function clickGame() {
+  score++;
+  document.getElementById("score").innerText = score;
+}
+
+/* TIC TAC TOE */
+let board = Array(9).fill("");
+let turn = "X";
+
+const boardDiv = document.getElementById("board");
+
+function drawBoard() {
+  boardDiv.innerHTML = "";
+  board.forEach((cell, i) => {
+    const div = document.createElement("div");
+    div.className = "cell";
+    div.innerText = cell;
+    div.onclick = () => move(i);
+    boardDiv.appendChild(div);
+  });
+}
+
+function move(i) {
+  if (board[i]) return;
+  board[i] = turn;
+  turn = turn === "X" ? "O" : "X";
+  drawBoard();
+}
+
+function resetTTT() {
+  board = Array(9).fill("");
+  turn = "X";
+  drawBoard();
+}
+
+drawBoard();
+</script>
+
+</body>
+</html>
+
